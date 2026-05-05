@@ -27,7 +27,7 @@ func NewEmailHandler(service *EmailService) *EmailHandler {
 // @Success      204
 // @Failure      400  {object}  map[string]string
 // @Failure      502  {object}  map[string]string
-// @Router       /email [post]
+// @Router       /send [post]
 func (h *EmailHandler) SendEmail(ctx fiber.Ctx) error {
 	var req models.Email
 

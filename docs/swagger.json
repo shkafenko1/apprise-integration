@@ -11,7 +11,7 @@
     },
     "basePath": "/",
     "paths": {
-        "/email": {
+        "/send": {
             "post": {
                 "description": "Sends an email via Apprise",
                 "consumes": [
