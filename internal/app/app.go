@@ -23,8 +23,8 @@ func App() {
 	c.SetupRoutes(app)
 	slog.Info("routes setup completed")
 
-	slog.Info("starting server", "port", "8080")
-	if err := app.Listen(":8080"); err != nil {
+	slog.Info("starting server", "port", cfg.HTTPPort)
+	if err := app.Listen(":" + cfg.HTTPPort); err != nil {
 		slog.Error("server failed to start", "error", err)
 	}
 }

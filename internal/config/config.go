@@ -1,15 +1,26 @@
 package config
 
+import (
+	"apprise-mvp/pkg/envparse"
+	"log/slog"
+
+	"github.com/joho/godotenv"
+)
+
 type Config struct {
-	HTTPAddr       string
+	HTTPPort       string
 	AppriseBaseUrl string
 	AppriseKey     string
 }
 
 func Load() Config {
+	if err := godotenv.Load(); err != nil {
+		slog.Error("Error loading .env file")
+	}
+
 	return Config{
-		HTTPAddr:       ":8080",
-		AppriseBaseUrl: "http://localhost:8000",
-		AppriseKey:     "myapp",
+		HTTPPort:       envparse.GetEnv("APP_PORT", "8080"),
+		AppriseBaseUrl: envparse.GetEnv("APPRISE_BASE_URL", "http://localhost:8000"),
+		AppriseKey:     envparse.GetEnv("APPRISE_KEY", "required"),
 	}
 }
