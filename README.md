@@ -64,8 +64,35 @@ docker run -p 8080:8080 --env-file .env apprise-mvp
 
 ## API Документация
 
+Для генерации или обновления документации Swagger используйте команду:
+
+```bash
+swag init -g cmd/apprise-mvp/main.go -ot json
+```
+
 После запуска сервиса документация Swagger доступна по адресу:
 `http://localhost:8080/swagger`
+
+## Тестирование (Email)
+
+Для тестирования отправки Email уведомлений рекомендуется использовать [Mailpit](https://github.com/axllent/mailpit) — современный инструмент для перехвата почты.
+
+Запуск Mailpit через Docker:
+
+```bash
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+```
+
+После запуска:
+- SMTP сервер: `localhost:1025` (без аутентификации)
+- Web-интерфейс: `http://localhost:8025`
+
+Пример `MAIL_SERVER_URL` для `.env`:
+`mailto://localhost:1025`
 
 ## Возможности
 
