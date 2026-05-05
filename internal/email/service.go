@@ -1,29 +1,36 @@
 package email
 
 import (
-	"apprise-mvp/internal/storage/models"
+	"apprise-mvp/internal/storage/dtos"
 	appriseclient "apprise-mvp/pkg/apprise"
 	"context"
 	"errors"
+	"fmt"
 )
 
 type EmailService struct {
-	client *appriseclient.Client
+	client  *appriseclient.Client
+	smtpUrl string
 }
 
-func NewEmailService(client *appriseclient.Client) *EmailService {
+func NewEmailService(client *appriseclient.Client, smtpUrl string) *EmailService {
 	return &EmailService{
-		client: client,
+		client:  client,
+		smtpUrl: smtpUrl,
 	}
 }
 
-func (es *EmailService) SendEmail(ctx context.Context, subject, body string) error {
-	if subject == "" || body == "" {
-		return errors.New("invalid email subject or body")
+func (es *EmailService) SendEmail(ctx context.Context, to, subject, body string) error {
+	if to == "" || subject == "" || body == "" {
+		return errors.New("empty fields")
 	}
-	message := models.Email{
-		Subject: subject,
-		Body:    body,
+
+	fullUrl := fmt.Sprintf("%s&to=%s", es.smtpUrl, to)
+
+	message := dtos.EmailToSend{
+		Title: subject,
+		Body:  body,
+		URLs:  fullUrl,
 	}
 
 	return es.client.Send(ctx, message)

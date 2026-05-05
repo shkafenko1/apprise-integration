@@ -1,12 +1,11 @@
 package appriseclient
 
 import (
-	"apprise-mvp/internal/storage/models"
+	"apprise-mvp/internal/storage/dtos"
 	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"strings"
 	"time"
@@ -14,24 +13,20 @@ import (
 
 type Client struct {
 	baseURL string
-	key     string
 	http    *http.Client
 }
 
-func New(baseURL, key string) *Client {
+func New(baseURL string) *Client {
 	return &Client{
 		baseURL: strings.TrimRight(baseURL, "/"),
-		key:     key,
 		http: &http.Client{
 			Timeout: 10 * time.Second,
 		},
 	}
 }
 
-func (c *Client) Send(ctx context.Context, msg models.Email) error {
-	url := fmt.Sprintf("%s/notify/%s", c.baseURL, c.key)
-
-	slog.DebugContext(ctx, "sending notification to apprise", "url", url)
+func (c *Client) Send(ctx context.Context, msg dtos.EmailToSend) error {
+	url := fmt.Sprintf("%s/notify", c.baseURL)
 
 	payload, err := json.Marshal(msg)
 	if err != nil {
@@ -54,6 +49,5 @@ func (c *Client) Send(ctx context.Context, msg models.Email) error {
 		return fmt.Errorf("apprise returned %s", resp.Status)
 	}
 
-	slog.DebugContext(ctx, "apprise notification sent successfully")
 	return nil
 }

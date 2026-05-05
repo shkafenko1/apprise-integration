@@ -15,8 +15,8 @@ type Container struct {
 
 func NewContainer(cfg config.Config) *Container {
 	slog.Debug("initializing container dependencies")
-	appriseClient := appriseclient.New(cfg.AppriseBaseUrl, cfg.AppriseKey)
-	sEmail := email.NewEmailService(appriseClient)
+	appriseClient := appriseclient.New(cfg.AppriseBaseUrl)
+	sEmail := email.NewEmailService(appriseClient, cfg.MailServerUrl)
 	hEmail := email.NewEmailHandler(sEmail)
 
 	return &Container{
