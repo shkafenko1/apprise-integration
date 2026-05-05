@@ -1,0 +1,28 @@
+package container
+
+import (
+	"apprise-mvp/internal/config"
+	"apprise-mvp/internal/email"
+	appriseclient "apprise-mvp/pkg/apprise"
+
+	"github.com/gofiber/fiber/v3"
+)
+
+type Container struct {
+	emailHandler *email.EmailHandler
+}
+
+func NewContainer(cfg config.Config) *Container {
+
+	appriseClient := appriseclient.New(cfg.AppriseBaseUrl, cfg.AppriseKey)
+	sEmail := email.NewEmailService(appriseClient)
+	hEmail := email.NewEmailHandler(sEmail)
+
+	return &Container{
+		emailHandler: hEmail,
+	}
+}
+
+func (c *Container) SetupRoutes(app *fiber.App) {
+	email.RegisterRoutes(app, c.emailHandler)
+}
