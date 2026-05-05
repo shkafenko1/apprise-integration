@@ -1,0 +1,1 @@
+module apprise-mvp
