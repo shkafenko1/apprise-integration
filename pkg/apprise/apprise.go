@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"strings"
 	"time"
@@ -30,6 +31,8 @@ func New(baseURL, key string) *Client {
 func (c *Client) Send(ctx context.Context, msg models.Email) error {
 	url := fmt.Sprintf("%s/notify/%s", c.baseURL, c.key)
 
+	slog.DebugContext(ctx, "sending notification to apprise", "url", url)
+
 	payload, err := json.Marshal(msg)
 	if err != nil {
 		return fmt.Errorf("failed to marshal apprise message: %w", err)
@@ -51,5 +54,6 @@ func (c *Client) Send(ctx context.Context, msg models.Email) error {
 		return fmt.Errorf("apprise returned %s", resp.Status)
 	}
 
+	slog.DebugContext(ctx, "apprise notification sent successfully")
 	return nil
 }

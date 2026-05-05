@@ -4,6 +4,7 @@ import (
 	"apprise-mvp/internal/config"
 	"apprise-mvp/internal/email"
 	appriseclient "apprise-mvp/pkg/apprise"
+	"log/slog"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -13,7 +14,7 @@ type Container struct {
 }
 
 func NewContainer(cfg config.Config) *Container {
-
+	slog.Debug("initializing container dependencies")
 	appriseClient := appriseclient.New(cfg.AppriseBaseUrl, cfg.AppriseKey)
 	sEmail := email.NewEmailService(appriseClient)
 	hEmail := email.NewEmailHandler(sEmail)
