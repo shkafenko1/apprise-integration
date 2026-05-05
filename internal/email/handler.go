@@ -18,6 +18,16 @@ func NewEmailHandler(service *EmailService) *EmailHandler {
 	}
 }
 
+// @Summary      Send email
+// @Description  Sends an email via Apprise
+// @Tags         email
+// @Accept       json
+// @Produce      json
+// @Param        request  body  models.Email  true  "Email payload"
+// @Success      204
+// @Failure      400  {object}  map[string]string
+// @Failure      502  {object}  map[string]string
+// @Router       /email [post]
 func (h *EmailHandler) SendEmail(ctx fiber.Ctx) error {
 	var req models.Email
 

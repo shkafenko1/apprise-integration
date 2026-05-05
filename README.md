@@ -6,7 +6,66 @@
 
 Этот проект использует [Apprise](https://github.com/caronc/apprise) для централизованной отправки уведомлений из приложения, фоновых задач, cron-процессов или CI/CD пайплайнов.
 
-Apprise позволяет отправлять сообщения через единый интерфейс и общий URL-формат для большого числа notification-сервисов, включая Telegram, Discord, Slack, Amazon SNS, Gotify, email и другие. Также библиотека поддерживает CLI, конфигурационные файлы, теги и вложения для тех сервисов, где это доступно.
+Apprise позволяет отправлять сообщения через единый интерфейс и общий URL-формат для большого числа notification-сервисов, включая Telegram, Discord, Slack, Amazon SNS, Gotify, email и другие.
+
+## Запуск проекта
+
+### 1. Требования
+
+- Docker и Docker Compose
+- Go 1.26+ (для локального запуска без Docker)
+
+### 2. Настройка окружения
+
+Создайте файл `.env` на основе `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Отредактируйте переменные в `.env`:
+- `APP_PORT`: Порт, на котором будет запущен сервис (по умолчанию 8080).
+- `APPRISE_BASE_URL`: URL API Apprise (например, `http://localhost:8000`).
+- `MAIL_SERVER_URL`: Формат URL для отправки email через Apprise (например, `mailto://user:pass@smtp.gmail.com`).
+
+### 3. Запуск инфраструктуры
+
+Для работы сервиса необходим запущенный контейнер **Apprise API**. Вы можете запустить его с помощью Docker:
+
+```bash
+docker run -d \
+  --name=apprise \
+  -p 8000:8000 \
+  caronc/apprise
+```
+
+Или через `docker-compose.yaml`:
+
+```bash
+docker-compose up -d
+```
+
+### 4. Запуск сервиса
+
+#### Локально:
+
+```bash
+go run cmd/apprise-mvp/main.go
+```
+
+#### Через Docker:
+
+Если у вас настроен `Dockerfile`:
+
+```bash
+docker build -t apprise-mvp .
+docker run -p 8080:8080 --env-file .env apprise-mvp
+```
+
+## API Документация
+
+После запуска сервиса документация Swagger доступна по адресу:
+`http://localhost:8080/swagger`
 
 ## Возможности
 

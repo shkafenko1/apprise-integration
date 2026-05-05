@@ -4,6 +4,7 @@ import (
 	"apprise-mvp/internal/config"
 	"apprise-mvp/internal/email"
 	appriseclient "apprise-mvp/pkg/apprise"
+	"apprise-mvp/pkg/swagger"
 	"log/slog"
 
 	"github.com/gofiber/fiber/v3"
@@ -26,4 +27,5 @@ func NewContainer(cfg config.Config) *Container {
 
 func (c *Container) SetupRoutes(app *fiber.App) {
 	email.RegisterRoutes(app, c.emailHandler)
+	swagger.SwagInit(app)
 }
