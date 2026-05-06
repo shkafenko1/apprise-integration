@@ -38,7 +38,7 @@ func (h *EmailHandler) SendEmail(ctx fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "invalid json")
 	}
 
-	err := h.service.SendEmail(ctx.Context(), req.Receiver, req.Subject, req.Body)
+	err := h.service.SendEmail(ctx.Context(), req)
 	if err != nil {
 		slog.ErrorContext(ctx.Context(), "failed to send email via service", "error", err, "status", fiber.StatusBadGateway)
 		return fiber.NewError(fiber.StatusBadGateway, err.Error())
