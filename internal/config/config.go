@@ -20,7 +20,7 @@ func Load() Config {
 
 	return Config{
 		HTTPPort:       envparse.GetEnv("APP_PORT", "8080"),
-		AppriseBaseUrl: envparse.GetEnv("APPRISE_BASE_URL", "http://localhost:8000"),
+		AppriseBaseUrl: envparse.GetEnv("APPRISE_API_URL", "http://localhost:8000"),
 		MailServerUrl:  envparse.GetEnv("MAIL_SERVER_URL", ""),
 	}
 }

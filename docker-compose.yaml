@@ -10,10 +10,21 @@ services:
       - .env
     depends_on:
       - apprise
+      - mailpit
 
   apprise:
     image: caronc/apprise:latest
+    env_file:
+      - .env
+    volumes:
+      - ./apprise-attachments:/attachments
     container_name: apprise
     ports:
       - "8000:8000"
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
